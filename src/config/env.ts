@@ -17,9 +17,11 @@ const envSchema = z.object({
   JWT_EXPIRY: z.string().default("7d"),
 
   // AI Providers
+  AI_PROVIDER: z.enum(["openai", "gemini", "claude", "grok"]).default("openai"),
   OPENAI_API_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
-  AI_PROVIDER: z.enum(["openai", "gemini"]).default("openai"),
+  ANTHROPIC_API_KEY: z.string().optional(),
+  XAI_API_KEY: z.string().optional(),
 
   // Blockchain RPC URLs
   SOLANA_RPC_URL: z.string(),
