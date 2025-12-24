@@ -1,13 +1,13 @@
 import express from "express"
 import cors from "cors"
-import { env } from "./config/env"
-import { errorHandler } from "./middlewares/error-handler"
-import { rateLimitMiddleware } from "./middlewares/rate-limit"
-
-// Import routes (we'll create these next)
-// import authRoutes from './routes/auth';
-// import chatRoutes from './routes/chat';
-// import transactionRoutes from './routes/transactions';
+import { env } from "./config/env.js"
+import { errorHandler } from "./middlewares/error-handler.js"
+import { rateLimitMiddleware } from "./middlewares/rate-limit.js"
+import authRoutes from "./routes/auth.js"
+import chatRoutes from "./routes/chat.js"
+import x402Routes from "./routes/x402.js"
+import gmgnRoutes from "./routes/gmgn.js"
+import { authMiddleware } from "./middlewares/auth.js"
 
 export function createApp() {
   const app = express()
@@ -22,12 +22,11 @@ export function createApp() {
     res.json({ status: "ok", timestamp: new Date().toISOString() })
   })
 
-  // Auth routes (public)
-  // app.use('/api/auth', authRoutes);
+  app.use("/api/auth", authRoutes)
 
-  // Protected routes
-  // app.use('/api/chat', authMiddleware, chatRoutes);
-  // app.use('/api/transactions', authMiddleware, transactionRoutes);
+  app.use("/api/chat", authMiddleware, chatRoutes)
+  app.use("/api/x402", authMiddleware, x402Routes)
+  app.use("/api/gmgn", authMiddleware, gmgnRoutes)
 
   // 404 handler
   app.use((req, res) => {

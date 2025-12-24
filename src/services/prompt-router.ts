@@ -4,10 +4,24 @@ import * as analyzeExecutor from "./executors/analyze-executor"
 import * as sendExecutor from "./executors/send-executor"
 import * as swapExecutor from "./executors/swap-executor"
 import * as signalExecutor from "./executors/signal-executor"
+import * as x402Executor from "./executors/x402-executor"
+import * as gmgnExecutor from "./executors/gmgn-analysis-executor"
 
 // Simple keyword-based classifier (in production, use AI for this)
 export async function classifyMessage(message: string): Promise<MessageType> {
   const lowerMessage = message.toLowerCase()
+
+  if (lowerMessage.includes("x402") || (lowerMessage.includes("pay") && lowerMessage.includes("solana"))) {
+    return MessageType.X402_PAY
+  }
+
+  if (
+    lowerMessage.includes("gmgn") ||
+    lowerMessage.includes("trending tokens") ||
+    (lowerMessage.includes("token analysis") && !lowerMessage.includes("send"))
+  ) {
+    return MessageType.GMGN_ANALYZE
+  }
 
   if (lowerMessage.includes("balance") || lowerMessage.includes("how much")) {
     return MessageType.BALANCE
@@ -66,6 +80,20 @@ interface ExecutorResult {
 export async function routeToExecutor(routing: RoutingContext): Promise<ExecutorResult> {
   try {
     switch (routing.messageType) {
+      case MessageType.X402_PAY:
+        return await x402Executor.executeX402Payment(
+          {
+            amount: 0,
+            recipientAddress: "",
+            tokenMint: "",
+            senderAddress: routing.walletAddress,
+          },
+          routing.userId,
+        )
+
+      case MessageType.GMGN_ANALYZE:
+        return await gmgnExecutor.getTrendingTokensGMGN(routing.userId)
+
       case MessageType.ANALYSIS:
         return await analyzeExecutor.execute({
           userMessage: routing.userMessage,
@@ -107,7 +135,7 @@ export async function routeToExecutor(routing: RoutingContext): Promise<Executor
       default:
         return {
           response:
-            "I'm not sure what you're asking. I can help you with wallet analysis, sending tokens, swapping, or getting trading signals.",
+            "I'm not sure what you're asking. I can help you with wallet analysis, sending tokens, swapping, X402 payments, GMGN token analysis, or getting trading signals.",
           executorType: "unknown",
         }
     }

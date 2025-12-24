@@ -22,6 +22,9 @@ const envSchema = z.object({
   GEMINI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
   XAI_API_KEY: z.string().optional(),
+  GMGN_API_URL: z.string().default("https://api.gmgn.ai"),
+  GMGN_API_KEY: z.string().optional(),
+  BITQUERY_API_KEY: z.string().optional(),
 
   // Blockchain RPC URLs
   SOLANA_RPC_URL: z.string(),
@@ -32,14 +35,8 @@ const envSchema = z.object({
   // Swap Providers
   JUPITER_API_URL: z.string().default("https://api.jup.ag"),
   UNISWAP_V3_PROVIDER_URL: z.string().optional(),
-
-  // Security
-  ALLOWED_CONTRACTS: z.string().default(""),
-  BLOCKED_CONTRACTS: z.string().default(""),
-  RATE_LIMIT_PER_HOUR: z.string().default("100"),
-
-  // CORS
-  CORS_ORIGIN: z.string().default("http://localhost:3000"),
+  X402_API_URL: z.string().default("https://api.x402.io"),
+  X402_API_KEY: z.string().optional(),
 })
 
 export type Environment = z.infer<typeof envSchema>

@@ -29,6 +29,8 @@ export enum MessageType {
   SWAP = "swap",
   SIGNAL = "signal",
   BALANCE = "balance",
+  X402_PAY = "x402_pay",
+  GMGN_ANALYZE = "gmgn_analyze",
   UNKNOWN = "unknown",
 }
 
@@ -55,7 +57,7 @@ export interface Transaction {
   walletAddress: WalletAddress
   chain: Chain
   txHash: string
-  type: "send" | "swap" | "analysis"
+  type: "send" | "swap" | "analysis" | "x402_pay"
   status: TransactionStatus
   details: Record<string, any>
   createdAt: Date
