@@ -37,6 +37,10 @@ const envSchema = z.object({
   UNISWAP_V3_PROVIDER_URL: z.string().optional(),
   X402_API_URL: z.string().default("https://api.x402.io"),
   X402_API_KEY: z.string().optional(),
+
+  // Polymarket API configuration
+  POLYMARKET_API_URL: z.string().default("https://clob.polymarket.com"),
+  POLYMARKET_API_KEY: z.string().optional(),
 })
 
 export type Environment = z.infer<typeof envSchema>

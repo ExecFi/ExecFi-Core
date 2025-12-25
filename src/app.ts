@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js"
 import chatRoutes from "./routes/chat.js"
 import x402Routes from "./routes/x402.js"
 import gmgnRoutes from "./routes/gmgn.js"
+import polymarketRoutes from "./routes/polymarket.js"
 import { authMiddleware } from "./middlewares/auth.js"
 
 export function createApp() {
@@ -27,6 +28,7 @@ export function createApp() {
   app.use("/api/chat", authMiddleware, chatRoutes)
   app.use("/api/x402", authMiddleware, x402Routes)
   app.use("/api/gmgn", authMiddleware, gmgnRoutes)
+  app.use("/api/polymarket", authMiddleware, polymarketRoutes)
 
   // 404 handler
   app.use((req, res) => {
